@@ -18,10 +18,9 @@ def verify_password(username, password):
         return True
     return False
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 @auth.login_required
 def hello_world():
-
     return 'Hello, World!'
 
 if __name__ == '__main__':
