@@ -3,9 +3,9 @@ FROM python:3.12-slim
 RUN mkdir /app
 
 WORKDIR /app/
-COPY . .
+ADD app /app
 
-RUN pip install -r requirements.txt
+RUN pip install --trusted-host pypi.python.org -r /app/requirements.txt
 
 EXPOSE 5000
 

@@ -15,3 +15,13 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "pii-obfuscation" #Must be unique in Heroku
           heroku_email: "deagan.c@gmail.com"
+          usedocker: true
+          healthcheck: "/healthcheck"
+          appdir: "app"
+          container_process: "web"
+          buildpacks: "heroku/python"
+          run: "pip install -r requirements.txt"
+          start: "python app.py"
+          scale: "web=1"
+          env: "FLASK_ENV=production"
+          
