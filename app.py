@@ -5,12 +5,23 @@ from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
 from transformers import pipeline, TFAutoModelForTokenClassification, AutoTokenizer
 from inference import obfuscate as obf
+import logging
 
 app = Flask(__name__)
 auth = HTTPBasicAuth()
 
+logging.basicConfig(level=logging.INFO)
+
+
+logging.info("Loading model...")
+
 model = TFAutoModelForTokenClassification.from_pretrained("DeaganH/pii_obfuscation_model", ignore_mismatched_sizes=True)
+
+logging.info("Loading tokenizer...")
+
 tokenizer = AutoTokenizer.from_pretrained("distilbert/distilbert-base-cased")
+
+logging.info("Model and tokenizer loaded successfully!")
 
 USER = os.environ.get('USER')
 PASSWORD = os.environ.get('PASSWORD')
@@ -38,7 +49,7 @@ def pii_removal(text):
 
     return jsonify(output) 
 
-@app.route('/obfuscate/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 @auth.login_required
 def obfuscate():
     data = request.get_json()
